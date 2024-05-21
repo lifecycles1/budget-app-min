@@ -27,7 +27,7 @@ const Signup = () => {
       body: JSON.stringify({ email, password }),
     };
     try {
-      const response = await fetch("https://budget-app-min-server.onrender.com/api/users/signup", options);
+      const response = await fetch("http://localhost:3000/api/users/signup", options);
       const jsonData = await response.json();
       if (jsonData.success) {
         localStorage.setItem("user", email);

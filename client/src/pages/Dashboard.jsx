@@ -123,7 +123,7 @@ const Dashboard = () => {
     (async () => {
       try {
         setLoading(true);
-        const response = await fetch("https://budget-app-min-server.onrender.com/api/expenses/get", {
+        const response = await fetch("http://localhost:3000/api/expenses/get", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ user }),
