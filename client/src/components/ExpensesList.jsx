@@ -18,13 +18,13 @@ const ExpenseList = () => {
   const handleSaveToDatabase = async () => {
     console.log(expenseInputs);
     const user = localStorage.getItem("user");
-    await fetch("https://budget-app-min-client.onrender.com/api/expenses/set", {
+    await fetch("https://budget-app-min-server.onrender.com/api/expenses/set", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user, expenses: expenseInputs }),
     });
 
-    const response = await fetch("https://budget-app-min-client.onrender.com/api/expenses/setFlag", {
+    const response = await fetch("https://budget-app-min-server.onrender.com/api/expenses/setFlag", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user }),
