@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import LandingNav from "../components/LandingNav";
 import dashboard from "../assets/dashboard.jpg";
 import LandingFooter from "../components/LandingFooter";
+import LoadingButton from "../components/LoadingButton";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -20,6 +22,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError(null);
     const options = {
       method: "POST",
@@ -27,7 +30,7 @@ const Signup = () => {
       body: JSON.stringify({ email, password }),
     };
     try {
-      const response = await fetch("https://budget-app-min-server.onrender.com/api/users/signup", options);
+      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/api/users/signup`, options);
       const jsonData = await response.json();
       if (jsonData.success) {
         localStorage.setItem("user", email);
@@ -35,6 +38,8 @@ const Signup = () => {
       } else setError(jsonData.message);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,9 +86,7 @@ const Signup = () => {
                     />
                   </div>
                   <div className="flex">
-                    <button type="submit" className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md">
-                      Sign Up
-                    </button>
+                    <LoadingButton type="submit" loading={loading} text="Sign Up" className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md" />
                     {error && <p className="text-red-500 ml-4">{error}</p>}
                   </div>
                 </form>

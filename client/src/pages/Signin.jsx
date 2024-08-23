@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import LandingNav from "../components/LandingNav";
 import LandingFooter from "../components/LandingFooter";
+import LoadingButton from "../components/LoadingButton";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -19,6 +21,7 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError(null);
     const options = {
       method: "POST",
@@ -26,7 +29,7 @@ const Signin = () => {
       body: JSON.stringify({ email, password }),
     };
     try {
-      const response = await fetch("https://budget-app-min-server.onrender.com/api/users/signin", options);
+      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/api/users/signin`, options);
       const jsonData = await response.json();
       if (jsonData.success && jsonData.message === "Not Done") {
         localStorage.setItem("user", email);
@@ -38,6 +41,8 @@ const Signin = () => {
       } else setError(jsonData.message);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -67,9 +72,7 @@ const Signin = () => {
                     <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md border-gray-300 shadow-sm py-2 px-3 placeholder-gray-400" placeholder="Enter your password" />
                   </div>
                   <div className="flex">
-                    <button type="submit" className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md">
-                      Sign In
-                    </button>
+                    <LoadingButton type="submit" loading={loading} text="Sign In" className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md" />
                     {error && <p className="text-red-500 ml-4">{error}</p>}
                   </div>
                 </form>

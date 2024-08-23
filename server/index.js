@@ -11,7 +11,5 @@ const expensesRoutes = require("./routes/expenses.routes");
 app.use(authRoutes);
 app.use(expensesRoutes);
 
-app.set("port", process.env.PORT || 3001);
-app.listen(app.get("port"), () => {
-  console.log(`✅ PORT: ${app.get("port")} 🌟`);
-});
+app.set("port", process.env.PORT || 8080);
+app.listen(app.get("port"), () => console.log(`✅ PORT: ${app.get("port")} 🌟`));
